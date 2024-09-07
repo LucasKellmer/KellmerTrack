@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1000345358140",
+    "project_id": "hobitrack-8c097",
+    "storage_bucket": "hobitrack-8c097.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1000345358140:android:54a37a4baf70a7b2975839",
+        "android_client_info": {
+          "package_name": "br.com.example.kellmertrack"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAArqG-X9GXnWkBp2iwKJB3-hNsKvkVvfI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/HomeFragment">
+
+    <fragment
+        android:id="@+id/HomeFragment"
+        android:name="br.com.example.kellmertrack.ui.fragments.HomeFragment"
+        android:label="HomeFragment"
+        tools:layout="@layout/home_fragment">
+        <action
+            android:id="@+id/action_HomeFragment_to_SetupFragment"
+            app:destination="@id/SetupFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@+id/kellmertrack_navigation"/>
+        <action
+            android:id="@+id/action_HomeFragment_to_ConfigFragment"
+            app:destination="@id/ConfigFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@+id/kellmertrack_navigation"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/SetupFragment"
+        android:name="br.com.example.kellmertrack.ui.fragments.SetupFragment"
+        android:label="SetupFragment"
+        tools:layout="@layout/setup_fragment">
+        <action
+            android:id="@+id/action_SetupFragment_to_HomeFragment"
+            app:destination="@id/HomeFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/ConfigFragment"
+        android:name="br.com.example.kellmertrack.ui.fragments.ConfigFragment"
+        android:label="ConfigFragment"
+        tools:layout="@layout/config_fragment">
+        <action
+            android:id="@+id/action_ConfigFragment_to_HomeFragment"
+            app:destination="@id/HomeFragment" />
+        <action
+            android:id="@+id/action_ConfigFragment_to_mapsFragment"
+            app:destination="@id/MapsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/MapsFragment"
+        android:name="br.com.example.kellmertrack.ui.fragments.MapsFragment"
+        android:label="fragment_maps"
+        tools:layout="@layout/fragment_maps" />
+    <fragment
+        android:id="@+id/EntregaFragment"
+        android:name="br.com.example.kellmertrack.ui.fragments.EntregaFragment"
+        android:label="entrega_fragment"
+        tools:layout="@layout/entrega_fragment" >
+        <action
+            android:id="@+id/action_EntregaFragment_to_confirmacaoFragment"
+            app:destination="@id/confirmacaoFragment" />
+        <argument
+            android:name="entrega"
+            app:argType="br.com.example.kellmertrack.local.model.entities.EntregaEntity" />
+        <action
+            android:id="@+id/action_EntregaFragment_to_ComprovanteFragment"
+            app:destination="@id/ComprovanteFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/confirmacaoFragment"
+        android:name="br.com.example.kellmertrack.ui.fragments.ConfirmacaoFragment"
+        android:label="confirmacao_fragment"
+        tools:layout="@layout/confirmacao_fragment" >
+        <argument
+            android:name="entregaDTO"
+            app:argType="br.com.example.kellmertrack.local.model.DTO.EntregaDTO" />
+        <action
+            android:id="@+id/action_confirmacaoFragment_to_EntregaFragment"
+            app:destination="@id/EntregaFragment" />
+        <action
+            android:id="@+id/action_confirmacaoFragment_to_AssinaturaFragment"
+            app:destination="@id/AssinaturaFragment" />
+    </fragment>
+    <dialog
+        android:id="@+id/funcoesInativasFragment"
+        android:name="br.com.example.kellmertrack.ui.fragments.FuncoesInativasFragment"
+        android:label="FuncoesInativasFragment"
+        tools:layout="@layout/funcoes_inativas"/>
+    <fragment
+        android:id="@+id/AssinaturaFragment"
+        android:name="br.com.example.kellmertrack.ui.fragments.AssinaturaFragment"
+        android:label="assinatura_fragment"
+        tools:layout="@layout/assinatura_fragment" >
+        <action
+            android:id="@+id/action_assinaturaFragment_to_ComprovanteFragment"
+            app:destination="@id/ComprovanteFragment"/>
+        <argument
+            android:name="entregaDTO"
+            app:argType="br.com.example.kellmertrack.local.model.DTO.EntregaDTO" />
+    </fragment>
+    <fragment
+        android:id="@+id/ComprovanteFragment"
+        android:name="br.com.example.kellmertrack.ui.fragments.ComprovanteFragment"
+        android:label="comprovante_fragment"
+        tools:layout="@layout/comprovante_fragment">
+        <action
+            android:id="@+id/action_ComprovanteFragment_to_EntregaFragment"
+            app:destination="@id/EntregaFragment" />
+        <argument
+            android:name="entregaDTO"
+            app:argType="br.com.example.kellmertrack.local.model.DTO.EntregaDTO" />
+        <argument
+            android:name="comprovante"
+            app:argType="string" />
+    </fragment>
+
+</navigation>

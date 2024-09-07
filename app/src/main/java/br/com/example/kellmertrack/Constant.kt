@@ -1,0 +1,31 @@
+package br.com.example.kellmertrack
+
+const val TAG = "kellmertrack"
+const val ACTION_ROTACAO = "ACTION_ROTACAO"
+const val ACTION_BLUETOOTH_STATUS = "ACTION_BLUETOOTH_STATUS"
+const val TAG_TASK_SINC = "WORKSINCBASE"
+
+const val TAG_TASK_FIREBASE = "WORKFIREBASE"
+const val TAG_TASK_DB = "WORKHOBITRACK"
+const val TAG_TASK = "WORK"
+const val TAG_TASK_UPDATE_APP = "TAG_TASK_UPDATE_APP"
+const val TAG_TASK_ENTREGA = "TAG_TASK_ENTREGA"
+const val TAG_TASK_EVENTOS = "TAG_TASK_EVENTOS"
+const val TAG_TASK_DESCARREGAMENTO = "TAG_TASK_DESCARREGAMENTO"
+const val TAG_TASK_COMPROVANTE = "TAG_TASK_COMPROVANTE"
+const val TAG_WAKE_LOCK = "TAG_WAKE_LOCK"
+
+
+const val CONECTADO = "conectado"
+const val PROCURANDO = "procurando"
+const val DESCONECTADO = "desconectado"
+
+const val ENTREGAATIVA = "ENTREGAATIVA"
+
+const val CHEGADA_USINA = "CHEGADA_USINA"
+const val SAIDA_USINA = "SAIDA_USINA"
+const val CHEGADA_OBRA = "CHEGADA_OBRA"
+const val SAIDA_OBRA = "SAIDA_OBRA"
+
+const val MECHATRONICS = "MECHATRONICS"
+const val BLAZONLABS = "BLAZONLABS"

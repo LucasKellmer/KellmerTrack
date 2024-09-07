@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">192.168.10.213</domain>
+        <domain includeSubdomains="true">34.95.222.160</domain>
+        <domain includeSubdomains="true">192.168.10.236</domain>
+        <domain includeSubdomains="true">192.168.10.48</domain>
+        <domain includeSubdomains="true">192.168.0.8</domain>
+        <domain includeSubdomains="true">kellmertrackapi.onrender.com</domain>
+    </domain-config>
+</network-security-config>

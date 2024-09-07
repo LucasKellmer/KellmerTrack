@@ -1,0 +1,153 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id('com.google.dagger.hilt.android')
+    id 'com.google.gms.google-services'
+    id 'com.google.firebase.crashlytics'
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
+    id 'kotlin-parcelize'
+    id 'androidx.navigation.safeargs.kotlin'
+}
+
+android {
+    namespace 'br.com.example.kellmertrack'
+    compileSdk 33
+
+    buildFeatures {
+        viewBinding true
+        dataBinding true
+    }
+
+    defaultConfig {
+        applicationId "br.com.example.kellmertrack"
+        minSdk 24
+        targetSdk 33
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        /*release {
+            minifyEnabled true
+            shrinkResources true
+            manifestPlaceholders = [crashlyticsCollectionEnabled:"true"]
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField("String", 'urlApi', '"https://sighapi.grupohobi.com.br"')
+            buildConfigField("String", 'urlApiContingencia', '"http://34.95.222.160:5000"')
+            buildConfigField("String", 'urlWs', '"wss://sighapi.grupohobi.com.br/hobitracksocket"')
+            buildConfigField("String", 'urlWsContingencia', '"ws://34.95.222.160:5000/hobitracksocket"')
+        }*/
+        staging {
+            ext.enableCrashlytics=false
+            manifestPlaceholders = [crashlyticsCollectionEnabled:"false"]
+            buildConfigField("String", 'urlApi', '"http://192.168.0.5:8080"')
+            buildConfigField("String", 'urlApiContingencia', '"http://192.168.0.5:8080"')
+            buildConfigField("String", 'urlWs', '"ws://192.168.0.5:8080/hobitracksocket"')
+            buildConfigField("String", 'urlWsContingencia', '"ws://192.168.10.5:8080/hobitracksocket"')
+        }
+        debug {
+            ext.enableCrashlytics=false
+            manifestPlaceholders = [crashlyticsCollectionEnabled:"false"]
+            buildConfigField("String", 'urlApi', '"https://kellmertrackapi.onrender.com"')
+            buildConfigField("String", 'urlWs', '"wss://kellmertrackapi.onrender.com/websocket"')
+            //buildConfigField("String", 'urlApi', '"http://192.168.0.8:8080"')
+            //buildConfigField("String", 'urlWs', '"ws://192.168.0.8:8080/websocket"')
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+
+    implementation 'androidx.core:core-ktx:1.7.0'
+    implementation 'com.google.android.material:material:1.9.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'com.google.firebase:firebase-inappmessaging-display-ktx:20.1.2'
+    implementation 'com.google.firebase:firebase-messaging-ktx:23.3.1'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.annotation:annotation:1.6.0'
+    //implementation 'com.google.firebase:firebase-firestore:24.10.2'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
+    //play service
+    implementation 'com.google.android.gms:play-services-location:19.0.1'
+    implementation 'com.google.android.gms:play-services-maps:18.0.2'
+
+    //room
+    implementation "androidx.room:room-runtime:2.4.2"
+    kapt "androidx.room:room-compiler:2.4.2"
+    implementation "androidx.room:room-ktx:2.4.2"
+    implementation "androidx.room:room-paging:2.4.2"
+
+    // Paging 3.0
+    implementation 'androidx.paging:paging-compose:1.0.0-alpha15'
+
+    //navigationf
+    implementation "androidx.navigation:navigation-fragment-ktx:2.5.3"
+    implementation "androidx.navigation:navigation-ui-ktx:2.5.3"
+
+    //viewmodel lifecycle
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.4.1"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1"
+    implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
+
+    //coroutines
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.1'
+
+    //Hilt
+    implementation("com.google.dagger:hilt-android:2.44")
+    kapt("com.google.dagger:hilt-android-compiler:2.44")
+
+    //geofence
+    implementation 'com.google.android.gms:play-services-location:18.0.0'
+
+    //WorkManager
+    implementation "androidx.work:work-runtime-ktx:2.7.1"
+    implementation 'androidx.hilt:hilt-work:1.0.0'
+    kapt "androidx.hilt:hilt-compiler:1.0.0"
+
+    //firebase infraestructure
+    implementation 'com.google.firebase:firebase-firestore-ktx:24.0.1'
+    //implementation 'com.google.firebase:firebase-firestore:24.9.0'
+    implementation 'com.google.firebase:firebase-crashlytics-ktx:18.2.8'
+
+    //retrofit e okhttp
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0"){
+        exclude module: "okhttp"
+    }
+    implementation "com.squareup.retrofit2:converter-gson:2.9.0"
+    implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.3'
+    implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.3'
+
+    //lottie
+    implementation "com.airbnb.android:lottie:3.7.2"
+
+    //material design
+    implementation "com.google.android.material:material:1.0.0"
+
+    //assinatura digital
+    implementation 'com.github.gcacace:signature-pad:1.3.1'
+
+    //ticket
+    implementation 'com.vipulasri:ticketview:1.1.2'
+
+    //pinview
+    implementation 'io.github.chaosleung:pinview:1.4.4'
+
+}
+kapt {
+    correctErrorTypes = true
+}

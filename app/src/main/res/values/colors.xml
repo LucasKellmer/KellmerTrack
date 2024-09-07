@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#1C5E9E</color>
+    <color name="purple_700">#114E8A</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="colorAccent">#FF5252</color>
+    <color name="colorSuccess">#12D548</color>
+    <color name="verdeClaro">#93D751</color>
+    <color name="verdeEscuro">#09590D</color>
+    <color name="colorDanger">#FF1744</color>
+    <color name="colorAttention">#FFEB3B</color>
+    <color name="colorPrimary_200">#A85A35</color>
+    <color name="colorPrimary_400">#804428</color>
+    <color name="colorPrimary_600">#653620</color>
+    <color name="colorPrimary_800">#472414</color>
+    <color name="colorPrimaryDark">#1976D2</color>
+    <color name="secondaryLight">#295E88</color>
+    <color name="colorInfo">#2E6DD6</color>
+    <color name="background">#FFFFFFFF</color>
+    <color name="btn_gradient_start">#472414</color>
+    <color name="btn_gradient_end">#A85A35</color>
+    <color name="gray">#B5B5B5</color>
+    <color name="darkGray">#595959</color>
+    <color name="lightGray">#DDDDDD</color>
+    <color name="ciano">#FF018786</color>
+    <color name="marker">#4D062277</color>
+    <color name="entrega_marker">#4D2C7107</color>
+    <color name="transparent">#00FFFFFF</color>
+</resources>

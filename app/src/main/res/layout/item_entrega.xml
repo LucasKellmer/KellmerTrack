@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!--<LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="60dp"
+            android:layout_height="match_parent">
+
+            <View
+                android:layout_width="3dp"
+                android:layout_height="match_parent"
+                android:background="@color/gray"
+
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/shape_circle"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                />
+
+            <View
+                android:id="@+id/iconComplete"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:background="@drawable/ic_check_circle"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:backgroundTint="#00E676"
+                />
+
+            <View
+                android:id="@+id/iconImcomplete"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:background="@drawable/ic_action_cancel"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:backgroundTint="#F83021"
+                android:visibility="gone"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_margin="5dp"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="4dp"
+            app:strokeColor="@color/brown"
+            app:strokeWidth="2dp"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@color/white"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="ENTREGA: "
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/darkGray"
+                        android:layout_marginStart="5dp"/>
+                    <TextView
+                        android:id="@+id/tvEntrega"
+                        android:layout_width="wrap_content"
+                        android:textColor="@color/darkGray"
+                        android:layout_height="20dp"
+                        android:text=""
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="5dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="OBRA: "
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/darkGray"
+                        android:layout_marginStart="5dp"/>
+                    <TextView
+                        android:id="@+id/tvObra"
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:textColor="@color/darkGray"
+                        android:text=""
+                        android:textSize="15sp"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="5dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="QUANTIDADE: "
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/darkGray"
+                        android:layout_marginStart="5dp"/>
+                    <TextView
+                        android:id="@+id/tvQuantidade"
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:textColor="@color/darkGray"
+                        android:text=""
+                        android:textSize="15sp"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>-->
+
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="entrega"
+            type="br.com.example.kellmertrack.local.model.entities.relation.EntregaWithObra" />
+    </data>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_margin="5dp"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="4dp"
+            app:strokeColor="@color/colorPrimary_400"
+            app:strokeWidth="2dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/entrega_item_background"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="5dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:text="CONTRATO: "
+                            android:textColor="@color/white"
+                            android:textSize="15sp"/>
+
+                        <TextView
+                            android:id="@+id/tvEntrega"
+                            android:layout_width="wrap_content"
+                            android:layout_height="20dp"
+                            android:text="@{String.valueOf(entrega.contratoEntity.contratoEntity.numero)}"
+                            tools:text="5"
+                            android:textColor="@color/white"
+                            android:textSize="15sp"
+                            android:textStyle="bold"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="5dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:text="OBRA: "
+                            android:textColor="@color/white"
+                            android:textSize="15sp"/>
+
+                        <TextView
+                            android:id="@+id/tvObra"
+                            android:layout_width="wrap_content"
+                            android:layout_height="20dp"
+                            android:text="@{entrega.contratoEntity.obraEntity.descricao}"
+                            tools:text="AMERICANAS"
+                            android:textColor="@color/white"
+                            android:textSize="15sp"
+                            android:textStyle="bold"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="5dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:text="QUANTIDADE: "
+                            android:textColor="@color/white"
+                            android:textSize="15sp"/>
+
+                        <TextView
+                            android:id="@+id/tvQuantidade"
+                            android:layout_width="wrap_content"
+                            android:layout_height="20dp"
+                            android:text='@{String.valueOf(entrega.entregaEntity.quantidade) + " M³"}'
+                            tools:text="10 M³"
+                            android:textColor="@color/white"
+                            android:textSize="15sp"
+                            android:textStyle="bold"/>
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/icon_complete"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:contentDescription="TODO"
+                    android:elevation="10dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/verify"
+                    android:visibility="@{entrega.entregaEntity.status == 2 ? View.VISIBLE : View.GONE}"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="20dp"
+                    android:alpha="0.7"/>
+
+                <ImageView
+                    android:id="@+id/icon_imcomplete"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:contentDescription="TODO"
+                    android:elevation="10dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/close"
+                    android:visibility="@{entrega.entregaEntity.status != 2 ? View.VISIBLE : View.GONE}"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="20dp"
+                    android:alpha="0.7"
+                    />
+            </RelativeLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+</layout>
