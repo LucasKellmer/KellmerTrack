@@ -19,7 +19,7 @@ class RotacaoRepository @Inject constructor(
         Log.d(TAG, "$rotacao")
         rotacaoDao.insert(rotacao)
         if(!rotacao.sincronizado){
-            if (firebaseService.enviaInformacaoDispositivoBluetoothFirebase(rotacaoDTO))
+            if (firebaseService.enviaRotacoesFirebase(rotacaoDTO))
                 rotacaoDao.updateRotacaoSincronizado(rotacao.id, true)
         }
     }
@@ -31,7 +31,7 @@ class RotacaoRepository @Inject constructor(
     suspend fun enviaRotacaoFirebase(){
         rotacaoDao.getSincronizar().forEach {rotacao ->
             val rotacaoDTO = RotacaoMapper().fromRotacaoEntityToDTO(rotacao)
-            if(firebaseService.enviaInformacaoDispositivoBluetoothFirebase(rotacaoDTO))
+            if(firebaseService.enviaRotacoesFirebase(rotacaoDTO))
                 rotacaoDao.updateRotacaoSincronizado(rotacao.id, true)
         }
     }

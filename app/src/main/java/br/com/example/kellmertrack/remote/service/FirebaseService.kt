@@ -35,7 +35,7 @@ class FirebaseService @Inject constructor(
         }
     }
 
-    fun enviaInformacaoDispositivoBluetoothFirebase(sensor : RotacaoDTO) : Boolean{
+    fun enviaRotacoesFirebase(sensor : RotacaoDTO) : Boolean{
         return try {
             FirebaseFirestore.getInstance().collection("rotacao")
                 .document(sensor.id)

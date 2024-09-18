@@ -37,6 +37,7 @@ import br.com.example.kellmertrack.TAG
 import br.com.example.kellmertrack.core.Sistema
 import br.com.example.kellmertrack.databinding.HomeFragmentBinding
 import br.com.example.kellmertrack.extensions.verificaConexao
+import br.com.example.kellmertrack.local.model.entities.RotacaoEntity
 import br.com.example.kellmertrack.local.model.entities.SetupEntity
 import br.com.example.kellmertrack.services.bluetooth.BluetoothService
 import br.com.example.kellmertrack.services.location.LocationService
@@ -302,10 +303,10 @@ class HomeFragment : Fragment() {
                         withContext(Dispatchers.Main) {
                             val intentExtra = intent.extras
                             if (intentExtra?.containsKey(BLAZONLABS) == true)
-                                BluetoothService.getBlazonlabsSensorData()?.let { hexStringToValues(it) }
+                                setSensorData(BluetoothService.getSensorData(), BLAZONLABS)
                                 //atualizaDadosSensor()
                             else if (intentExtra?.containsKey(MECHATRONICS) == true)
-                                BluetoothService.getMechatronicSensorData()?.let { parseRawData(it) }
+                                setSensorData(BluetoothService.getSensorData(), MECHATRONICS)
                         }
                     }
                 //}
@@ -315,68 +316,18 @@ class HomeFragment : Fragment() {
         }
     }
 
-    suspend fun parseRawData(rawData: ByteArray) {
-        if (rawData.size < 30) { // Certifique-se de que os dados são longos o suficiente
-            Log.e(TAG, "Dados brutos muito curtos!")
-            return
-        }
-        val rotationDirection = rawData[7].toInt()
-        val totalTimeOfDrumRotation = (rawData[11].toInt() shl 8) or rawData[12].toInt()
-        val rotationCycles = (rawData[13].toInt() shl 8) or rawData[14].toInt()
-        val temperature = rawData[15].toInt()
-
-        if(rotationDirection != 0){
-            salvaDadosSensor(0, temperature, rotationDirection)
-        }
-
+    fun setSensorData(rotacao : RotacaoEntity?, sensorModel : String) {
         with(binding){
             val momento = BluetoothService.getLastSensorDataTime()
-            tvRotationDirectionValue.text = rotationDirection.toString()
-            tvTimeOfRotationValue.text = totalTimeOfDrumRotation.toString()
-            tvRotationCyclesValue.text = rotationCycles.toString()
-            tvTemperatureValue.text = temperature.toString()
+            if(sensorModel == MECHATRONICS)
+                tvRotationDirectionValue.text = rotacao?.direcao.toString()
+            else if (sensorModel == BLAZONLABS){
+                tvRpmValue.text = rotacao?.rpm.toString()
+                tvBatteryValue.text = rotacao?.bateria.toString()
+            }
+            tvTemperatureValue.text = rotacao?.temperatura.toString()
             tvMomentoValue.text = "${momento?.let { dateFormat.format(it).toString() + "h"} ?: "Nenhuma conexão"}"
         }
-
-        /*Log.d(TAG, "Drum rotation speed: $rotationDirection")
-        Log.d(TAG, "Y-plane angle: $yPlaneAngle")
-        Log.d(TAG, "Z-plane angle: $zPlaneAngle")
-        Log.d(TAG, "Sensor status: $sensorStatus")
-        Log.d(TAG, "Total time of drum rotation: $totalTimeOfDrumRotation")
-        Log.d(TAG, "Number of drum starts: $rotationCycles")
-        Log.d(TAG, "Temperature: $temperature")
-        Log.d(TAG, "Serial number: $serialNumber")
-        Log.d(TAG, "Sensor name: $sensorName")*/
-    }
-
-    suspend fun hexStringToValues(hex: ByteArray) {
-        Log.d(TAG, "====================== hexStringToValues: Chamado")
-        val hexString = byteArrayToHex(hex)
-        // Verifica se a string hexadecimal possui 8 caracteres (4 pares)
-        if (hexString.length != 8) {
-            throw IllegalArgumentException("O hexadecimal deve ter 8 caracteres.")
-        }
-
-        // Divide a string em 4 pares
-        val rpm = hex.copyOfRange(0, 1).joinToString("").toInt()
-        val battery = hexString.substring(2, 4).toInt(16)
-        val temperature = hexString.substring(4, 6).toInt(16)
-
-        salvaDadosSensor(battery, temperature, rpm)
-
-        if (isAppInForeground){
-            with(binding){
-                val momento = BluetoothService.getLastSensorDataTime()
-                tvRpmValue.text = rpm.toString()
-                tvBatteryValue.text = battery.toString()
-                tvTemperatureValue.text = temperature.toString()
-                tvMomentoValue.text = "${momento?.let { dateFormat.format(it).toString() + "h"} ?: "Nenhuma conexão"}"
-            }
-        }
-    }
-
-    fun byteArrayToHex(byteArray: ByteArray): String {
-        return byteArray.joinToString("") { String.format("%02X", it) }
     }
 
     private fun atualizaDadosSensor() {
@@ -391,14 +342,6 @@ class HomeFragment : Fragment() {
                 } else if (sensorModelo == BLAZONLABS){
                     llBlazonlabsData.visibility = View.VISIBLE
                     llMechatronicsData.visibility = View.GONE
-                    /*val dados = BluetoothService.getBlazonlabsSensorData()
-                    val momento = BluetoothService.getLastSensorDataTime()
-                    lifecycleScope.launch {
-                        val teste = viewModel.buscaUltimosDados()
-                        val rpm = (dados?.substringBefore(",")?.toInt())
-                        tvRpmValue.text = (rpm?.toString() ?: teste.rpm?.toString() ?: "0")
-                        tvMomentoValue.text = "${momento?.let { dateFormat.format(it).toString() + "h"} ?: "Nenhuma conexão"}"
-                    }*/
                 }
             }
             buscaUltimosDados(sensorModelo)
@@ -418,14 +361,6 @@ class HomeFragment : Fragment() {
                 binding.tvRpmValue.text = dados.direcao.toString()
                 binding.tvBatteryValue.text = dados.bateria.toString()
             }
-        }
-    }
-
-    private suspend fun salvaDadosSensor(bateria : Int, temperatura : Int, direcao : Int){
-        Log.d(TAG, "====================== salvaDadosSensor: Chamado")
-        val rotacaoEntity = viewModel.criaRotacaoEntity(bateria, temperatura, direcao)
-        if (rotacaoEntity != null) {
-            viewModel.salvaRotacao(rotacaoEntity)
         }
     }
 

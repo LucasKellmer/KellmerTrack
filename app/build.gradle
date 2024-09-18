@@ -32,7 +32,7 @@ android {
 
     buildTypes {
         release {
-            ext.enableCrashlytics=false
+            ext.enableCrashlytics=true
             manifestPlaceholders = [crashlyticsCollectionEnabled:"false"]
             buildConfigField("String", 'urlApi', '"https://kellmertrackapi.onrender.com"')
             buildConfigField("String", 'urlWs', '"wss://kellmertrackapi.onrender.com/websocket"')

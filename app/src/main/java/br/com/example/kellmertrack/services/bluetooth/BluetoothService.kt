@@ -32,6 +32,7 @@ import br.com.example.kellmertrack.MECHATRONICS
 import br.com.example.kellmertrack.PROCURANDO
 import br.com.example.kellmertrack.R
 import br.com.example.kellmertrack.TAG
+import br.com.example.kellmertrack.local.model.entities.RotacaoEntity
 import br.com.example.kellmertrack.local.repository.EntregaRepository
 import br.com.example.kellmertrack.local.repository.RotacaoRepository
 import br.com.example.kellmertrack.local.repository.SetupRepository
@@ -42,10 +43,12 @@ import br.com.example.kellmertrack.ui.utils.showNotification
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.Date
 import java.util.Timer
 import java.util.TimerTask
+import java.util.UUID
 import javax.inject.Inject
 
 
@@ -199,8 +202,7 @@ class BluetoothService @Inject constructor(): Service(), BluetoothServiceCallbac
                     val timeDifference = lastSensorDataScanned!!.time - (lastSensorDataSaved?.time ?: 0)
                     if (timeDifference >= 30000) {
                         lastSensorDataSaved = Date()
-                        mecatronicsSensorData = result.scanRecord?.bytes
-                        sendSensorDataBroadcast(MECHATRONICS)
+                        getMechatronicData(result.scanRecord?.bytes)
                     }
                 }else if(tipoSensor == BLAZONLABS){
                     val manufacturerSpecificData = result.scanRecord?.manufacturerSpecificData
@@ -211,8 +213,7 @@ class BluetoothService @Inject constructor(): Service(), BluetoothServiceCallbac
                             Log.d(TAG, "========= timeDifference: $timeDifference")
                             if (timeDifference >= 60000) {
                                 lastSensorDataSaved = Date()
-                                blazonlabsSensorData = byteArray
-                                sendSensorDataBroadcast(BLAZONLABS)
+                                getBlazonlabsData(byteArray)
                             }
                         }
                     }
@@ -262,13 +263,81 @@ class BluetoothService @Inject constructor(): Service(), BluetoothServiceCallbac
         this.showNotification(1, title, notificationText, type, channelName, NotificationManager.IMPORTANCE_LOW, icon)
     }
 
-       private fun sendSensorDataBroadcast(tipoSensor : String) {
-           println("Enviando broadcast: $tipoSensor")
+    fun getMechatronicData(rawData: ByteArray?) {
+        if (rawData != null){
+            if (rawData.size < 30) {
+                Log.e(TAG, "Raw data  muito curto!")
+                return
+            }
+            val rotationDirection = rawData[7].toInt()
+            val temperature = rawData[15].toInt()
+
+            if(rotationDirection != 0){
+                val rotacaoEntity = criaRotacaoEntity(0, temperature, rotationDirection)
+                if (rotacaoEntity != null) {
+                    sensorData = rotacaoEntity
+                    sendSensorDataBroadcast(MECHATRONICS)
+                    GlobalScope.launch {
+                        rotacaoRepository.salvaDadosRotacao(rotacaoEntity)
+
+                    }
+                }
+            }
+        }
+    }
+
+    private fun getBlazonlabsData(byteArray: ByteArray){
+        val hexString = byteArrayToHex(byteArray)
+        // Verifica se a string hexadecimal possui 8 caracteres (4 pares)
+        if (hexString.length != 8) {
+            throw IllegalArgumentException("O hexadecimal deve ter 8 caracteres.")
+        }
+        val rpm = byteArray.copyOfRange(0, 1).joinToString("").toInt()
+        val battery = hexString.substring(2, 4).toInt(16)
+        val temperature = hexString.substring(4, 6).toInt(16)
+
+        if(rpm != 0){
+            val rotacaoEntity = criaRotacaoEntity(battery, temperature, rpm)
+            if (rotacaoEntity != null) {
+                sensorData = rotacaoEntity
+                sendSensorDataBroadcast(BLAZONLABS)
+                GlobalScope.launch {
+                    rotacaoRepository.salvaDadosRotacao(rotacaoEntity)
+
+                }
+            }
+        }
+    }
+
+    fun byteArrayToHex(byteArray: ByteArray): String {
+        return byteArray.joinToString("") { String.format("%02X", it) }
+    }
+
+    fun criaRotacaoEntity(bateria : Int, temperatura : Int, direcao : Int): RotacaoEntity? {
+        val setup = setupRepository.buscaSetup()
+        return if (setup != null){
+            val entrega = entregaRepository.findEntregaAtiva()
+            val rotacao = RotacaoEntity(
+                id = UUID.randomUUID().toString(),
+                veiculoId = setup.veiculosId,
+                dispositivo = setup.numeroInterno,
+                rpm = if(setup.modelo == BLAZONLABS) direcao else 0,
+                momento = Date(),
+                entregaId = entrega?.id,
+                bateria = bateria,
+                temperatura = temperatura,
+                direcao = direcao,
+            )
+            rotacao
+        } else null
+    }
+
+    private fun sendSensorDataBroadcast(tipoSensor : String) {
         val intent = Intent(ACTION_ROTACAO).apply {
             if (tipoSensor == BLAZONLABS)
-                this.putExtra(BLAZONLABS, getBlazonlabsSensorData())
+                this.putExtra(BLAZONLABS, "BLAZONLABS")
             else
-                this.putExtra(MECHATRONICS, getMechatronicSensorData())
+                this.putExtra(MECHATRONICS, "MECHATRONICS")
         }
         LocalBroadcastManager.getInstance(applicationContext).sendBroadcast(intent)
     }
@@ -291,14 +360,9 @@ class BluetoothService @Inject constructor(): Service(), BluetoothServiceCallbac
     }
 
     companion object {
-        private var blazonlabsSensorData: ByteArray? = null
-        fun getBlazonlabsSensorData(): ByteArray? {
-            return blazonlabsSensorData
-        }
-
-        private var mecatronicsSensorData: ByteArray? = null
-        fun getMechatronicSensorData(): ByteArray? {
-            return mecatronicsSensorData
+        private var sensorData: RotacaoEntity? = null
+        fun getSensorData(): RotacaoEntity? {
+            return sensorData
         }
 
         private var lastSensorDataSaved : Date? = null

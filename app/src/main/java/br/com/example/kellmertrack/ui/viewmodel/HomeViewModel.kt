@@ -71,30 +71,4 @@ class HomeViewModel @Inject constructor(
             temperatura = dados?.temperatura,
         )
     }
-
-    suspend fun salvaRotacao(rotacaoEntity: RotacaoEntity){
-        Log.d(TAG, "=================== salvaRotacao: chamado ")
-        val rotacaoDTO = RotacaoMapper().fromRotacaoEntityToDTO(rotacaoEntity)
-        rotacaoRepository.salvaDadosRotacao(rotacaoEntity)
-        firebaseService.enviaInformacaoDispositivoBluetoothFirebase(rotacaoDTO)
-    }
-
-    fun criaRotacaoEntity(bateria : Int, temperatura : Int, direcao : Int): RotacaoEntity? {
-        val setup = setupRepository.buscaSetup()
-        return if (setup != null){
-            val entrega = entregaRepository.findEntregaAtiva()
-            val rotacao = RotacaoEntity(
-                id = UUID.randomUUID().toString(),
-                veiculoId = setup.veiculosId,
-                dispositivo = setup.numeroInterno,
-                rpm = if(setup.modelo == BLAZONLABS) direcao else 0,
-                momento = Date(),
-                entregaId = entrega?.id,
-                bateria = bateria,
-                temperatura = temperatura,
-                direcao = direcao,
-            )
-            rotacao
-        } else null
-    }
 }
