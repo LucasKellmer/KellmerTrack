@@ -9,6 +9,7 @@ import br.com.example.kellmertrack.local.model.DTO.TrajetoDTO
 import br.com.example.kellmertrack.local.model.entities.EntregaEntity
 import br.com.example.kellmertrack.local.model.entities.HobitrackVersionEntity
 import br.com.example.kellmertrack.local.repository.TrajetoRepository
+import br.com.example.kellmertrack.remote.model.DispositivoStatus
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import javax.inject.Inject
@@ -66,6 +67,16 @@ class FirebaseService @Inject constructor(
             true
         }catch (e : Exception){
             throw Exception("Erro ao enviar entrega para o Firebase: ${e.message}")
+        }
+    }
+
+    fun criaDispostivoStatus(status: DispositivoStatus) {
+        try {
+            FirebaseFirestore.getInstance().collection("dispositivos")
+                .document(status.dispositivo)
+                .set(status)
+        } catch (e: Exception) {
+            Log.d(TAG, "Erro ao criar status dispositivo: ${e.message}")
         }
     }
 

@@ -19,8 +19,8 @@ class ConfigViewModel @Inject constructor(
         emit(configRepository.buscaAtualizacaoCadastro(numeroInterno))
     }
 
-    suspend fun atualizaDispositivo(mac : String){
-        configRepository.atualizaMacDispositivo(mac)
+    suspend fun atualizaDispositivo(mac : String, modelo: String){
+        configRepository.atualizaMacDispositivo(mac, modelo)
     }
 
     suspend fun buscaSetup() : SetupEntity? {

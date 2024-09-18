@@ -34,4 +34,8 @@ class EventoRepository @Inject constructor(
     suspend fun buscaUltimoEvento(entregaId : String) : EventoEntity?{
         return eventoDao.buscaUltimoEvento(entregaId)
     }
+
+    suspend fun limpaEventos(){
+        eventoDao.deleteAll()
+    }
 }

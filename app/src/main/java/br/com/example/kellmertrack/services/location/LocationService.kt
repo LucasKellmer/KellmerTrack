@@ -81,6 +81,10 @@ class LocationService @Inject constructor() : Service(), LocationClientCallBack 
                 "STOP" -> {
                     destroyService()
                 }
+                "REINICIA_GEOFENCE" -> {
+                    Log.d(TAG, "onStartCommand: Reiniciando Geofence")
+                    reiniciaGeofence()
+                }
             }
         }
         return START_STICKY
@@ -105,9 +109,9 @@ class LocationService @Inject constructor() : Service(), LocationClientCallBack 
                         if (location.distanceTo(lastLocation!!) > 0) {
                             val setup = setupRepository.buscaSetup()
                             if(setup != null){
-                                val deviceId = setup.numeroInterno
+                                val numeroInterno = setup.numeroInterno
                                 val veiculoId = setup.veiculosId
-                                val trajeto = criaTrajeto(location, deviceId, veiculoId)
+                                val trajeto = criaTrajeto(location, numeroInterno, veiculoId)
                                 val localizacaoDTO = TrajetoMapper().fromTrajetoEntityToDTO(trajeto)
                                 monitorarGeofence(location)
                                 trajetoRepository.salvaDadosTrajeto(trajeto)
@@ -215,5 +219,9 @@ class LocationService @Inject constructor() : Service(), LocationClientCallBack 
                 geofenceIniciado = true
             }
         }
+    }
+
+    fun reiniciaGeofence(){
+        geofenceIniciado = false
     }
 }

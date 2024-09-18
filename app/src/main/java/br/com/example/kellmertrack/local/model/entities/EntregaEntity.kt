@@ -9,8 +9,7 @@ import java.util.Date
 
 @Entity(tableName = "entrega")
 @Parcelize
-data class
-EntregaEntity (
+data class EntregaEntity (
     @PrimaryKey(autoGenerate = false)
     val id : Int? = null,
     val momento: Date,

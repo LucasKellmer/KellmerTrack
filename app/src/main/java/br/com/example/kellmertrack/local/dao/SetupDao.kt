@@ -26,6 +26,6 @@ abstract class SetupDao : BaseDao<SetupEntity> {
     @Query("SELECT * FROM setup WHERE numero_interno = :numeroInterno")
     abstract fun buscaSetupByNumeroInterno(numeroInterno : String?): SetupEntity?
 
-    @Query("UPDATE setup SET mac = :mac")
-    abstract suspend fun atualizaMacDispositivo(mac :String)
+    @Query("UPDATE setup SET mac = :mac, modelo = :modelo")
+    abstract suspend fun atualizaMacDispositivo(mac :String, modelo : String)
 }

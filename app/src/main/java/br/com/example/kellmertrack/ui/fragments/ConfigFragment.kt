@@ -74,10 +74,10 @@ class ConfigFragment : Fragment() {
                         Toast.makeText(activity, "Dispositivo não cadastrado. Verifique!", Toast.LENGTH_SHORT).show()
                     } else {
                         atualizaBotaoBuscaNumeroInterno(true)
-                        if (dispositivoLocal?.mac == response.mac) { Toast.makeText(activity, "O mac já está atualizado!", Toast.LENGTH_SHORT).show()
+                        if (dispositivoLocal?.mac == response.mac && dispositivoLocal?.modelo == response.modelo) { Toast.makeText(activity, "O mac já está atualizado!", Toast.LENGTH_SHORT).show()
                         } else {
                             lifecycleScope.launch {
-                                viewModel.atualizaDispositivo(response.mac)
+                                viewModel.atualizaDispositivo(response.mac, response.modelo)
                                 Sistema.configuraSistema(SetupMapper().fromSetupDTOtoEntity(response))
                                 Toast.makeText(activity,"Mac atualizado!", Toast.LENGTH_SHORT).show()
                             }

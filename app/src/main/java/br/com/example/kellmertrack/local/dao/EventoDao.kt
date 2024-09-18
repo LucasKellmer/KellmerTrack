@@ -33,8 +33,7 @@ abstract class EventoDao : BaseDao<EventoEntity> {
     @Query("SELECT * FROM eventos WHERE entrega_id = :entregaId order by momento desc limit 1")
     abstract suspend fun buscaUltimoEvento(entregaId: String) : EventoEntity?
 
-    @Query("DELETE FROM eventos WHERE (date(momento / 1000, 'unixepoch', 'localtime') < date() AND sincronizado = 1)" +
-            " OR (date(momento / 1000, 'unixepoch', 'localtime') < date('now', '-10 day'))")
+    @Query("DELETE FROM eventos")
     abstract suspend fun deleteAll()
 
     @Query("DELETE FROM eventos WHERE sincronizado = 1" +

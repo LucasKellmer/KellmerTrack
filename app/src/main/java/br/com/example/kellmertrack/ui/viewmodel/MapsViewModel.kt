@@ -26,8 +26,10 @@ class MapsViewModel @Inject constructor(
 
     fun criaMarcacoes(entregas: EntregaWithObra?, map: GoogleMap, empresa : EmpresaEntity?, context : Context) {
         entregas?.let { entrega ->
-            val localizacaoEntrega = LatLng(entrega.contratoEntity.obraEntity.latitude, entrega.contratoEntity.obraEntity.longitude)
-            criaMarcador(map, localizacaoEntrega, "Localização da obra", R.drawable.entrega_icon, context)
+            if(entrega.contratoEntity.obraEntity != null){
+                val localizacaoEntrega = LatLng(entrega.contratoEntity.obraEntity.latitude, entrega.contratoEntity.obraEntity.longitude)
+                criaMarcador(map, localizacaoEntrega, "Localização da obra", R.drawable.entrega_icon, context)
+            }
             if (empresa != null){
                 val localizacaoEmpresa = LatLng(empresa.latitude, empresa.longitude)
                 criaMarcador(map, localizacaoEmpresa, "Localização da usina", R.drawable.usina_icon, context)

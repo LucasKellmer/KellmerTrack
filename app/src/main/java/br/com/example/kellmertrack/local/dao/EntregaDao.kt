@@ -28,8 +28,7 @@ EntregaDao : BaseDao<EntregaEntity> {
     @Query("UPDATE entrega SET status = :status WHERE cast(id as text) = :entregaId")
     abstract suspend fun updateEntregaStatus(entregaId : Int, status: Int)
 
-    @Query("DELETE FROM entrega WHERE (date(momento / 1000, 'unixepoch', 'localtime') < date() AND sincronizado = 1)" +
-            " OR (date(momento / 1000, 'unixepoch', 'localtime') < date('now', '-10 day'))")
+    @Query("DELETE FROM entrega")
     abstract suspend fun deleteAll()
 
     @Query("DELETE FROM entrega WHERE sincronizado = 1" +

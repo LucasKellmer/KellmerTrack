@@ -1,5 +1,7 @@
 package br.com.example.kellmertrack.services.tasks
 
+import android.content.Context
+import android.content.Intent
 import android.util.Log
 import br.com.example.kellmertrack.TAG_TASK_ENTREGA
 import br.com.example.kellmertrack.local.model.DTO.EntregaAPI
@@ -8,6 +10,8 @@ import br.com.example.kellmertrack.remote.model.Status
 import br.com.example.kellmertrack.local.model.TipoEvento
 import br.com.example.kellmertrack.local.repository.EntregaRepository
 import br.com.example.kellmertrack.local.repository.EventoRepository
+import br.com.example.kellmertrack.services.location.LocationService
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import javax.inject.Inject
@@ -15,6 +19,7 @@ import javax.inject.Inject
 class TaskEntrega @Inject constructor(
     private val entregaRepository: EntregaRepository,
     private val eventoRepository: EventoRepository,
+    @ApplicationContext private val context : Context
 ) : TaskKellmertrack {
     override suspend fun runTaskAsync(params: Map<String, Any>) = coroutineScope {
         async {
@@ -27,10 +32,17 @@ class TaskEntrega @Inject constructor(
                     //Log.d(TAG_TASK_ENTREGA, "Entrega encontrada: ${entrega}")
                     Log.d(TAG_TASK_ENTREGA, "Limpando entrega atual")
                     entregaRepository.limpaEntregas()
+                    eventoRepository.limpaEventos()
                     Log.d(TAG_TASK_ENTREGA, "Task salvando entrega localmente")
                     entregaRepository.salvarEntrega(response)
                     criaEventoNovaEntrega(entrega)
                     confirmaEntregaRecebida(entrega.id)
+
+                    // Enviar Intent para reiniciar o Geofence
+                    val intent = Intent(context, LocationService::class.java).apply {
+                        action = "REINICIA_GEOFENCE"
+                    }
+                    context.startService(intent)
                 }
 
                 return@async TaskResult.SUCCESS

@@ -8,13 +8,13 @@ import br.com.example.kellmertrack.local.model.entities.ObraEntity
 
 data class ContratoWithObraAndCliente(
     @Embedded
-    val contratoEntity: ContratoEntity,
+    val contratoEntity: ContratoEntity?,
 
     @Relation(
         parentColumn = "obraId",
         entityColumn = "id"
     )
-    val obraEntity: ObraEntity,
+    val obraEntity: ObraEntity?,
 
     @Relation(
     parentColumn = "cliente",

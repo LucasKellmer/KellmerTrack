@@ -8,7 +8,7 @@ class EmpresaMapper {
     fun toEmpresaEntity(empresa : EmpresaDTO) : EmpresaEntity {
         return EmpresaEntity(
             codigo = empresa.codigo,
-            nome = empresa.nome,
+            nome = empresa.descricao,
             latitude = empresa.latitude,
             longitude = empresa.longitude,
             raio = empresa.raio

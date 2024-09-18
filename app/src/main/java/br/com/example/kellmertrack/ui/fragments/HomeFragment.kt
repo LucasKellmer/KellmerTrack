@@ -86,6 +86,7 @@ class HomeFragment : Fragment() {
     override fun onPause() {
         super.onPause()
         isAppInForeground = false
+        LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(broadcastReceiver)
     }
 
     override fun onAttach(context: Context) {
@@ -102,6 +103,7 @@ class HomeFragment : Fragment() {
         verificaAtualizacaoApp()
         //inicializa()
         startServices()
+        setBroadcastReceiver()
         return inflater.inflate(R.layout.home_fragment, container, false)
     }
 
@@ -110,7 +112,6 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding = HomeFragmentBinding.bind(view)
         setObservers()
-        setBroadcastReceiver()
         inicializa()
         atualizaDadosSensor()
         atualizaSensorStatus()
@@ -280,6 +281,7 @@ class HomeFragment : Fragment() {
     private fun setBroadcastReceiver() {
         viewModel.broadcastReceiver.observe(viewLifecycleOwner){ status ->
             if(!status){
+                println("------------------- setando broadcastReceiver")
                 broadcastReceiver = DeviceServiceBroadcasterReceiver()
                 val intentFilter = IntentFilter().apply {
                     this.addAction(ACTION_ROTACAO)
@@ -294,6 +296,7 @@ class HomeFragment : Fragment() {
     private inner class DeviceServiceBroadcasterReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             if (intent?.action == ACTION_ROTACAO) {
+                println("======================= broadcast recebido")
                 //if(isAppInForeground){
                     GlobalScope.launch {
                         withContext(Dispatchers.Main) {
@@ -317,19 +320,12 @@ class HomeFragment : Fragment() {
             Log.e(TAG, "Dados brutos muito curtos!")
             return
         }
-
         val rotationDirection = rawData[7].toInt()
-        val yPlaneAngle = rawData[8].toInt()
-        val zPlaneAngle = rawData[9].toInt()
-        val sensorStatus = rawData[10].toInt()
         val totalTimeOfDrumRotation = (rawData[11].toInt() shl 8) or rawData[12].toInt()
         val rotationCycles = (rawData[13].toInt() shl 8) or rawData[14].toInt()
         val temperature = rawData[15].toInt()
-        val serialNumber = rawData.copyOfRange(16, 20).joinToString("") { "%02X".format(it) }
-        val sensorNameBytes = rawData.copyOfRange(22, 30)
-        val sensorName = String(sensorNameBytes, Charsets.UTF_8)
 
-        if(rotationDirection > 0){
+        if(rotationDirection != 0){
             salvaDadosSensor(0, temperature, rotationDirection)
         }
 
@@ -338,6 +334,7 @@ class HomeFragment : Fragment() {
             tvRotationDirectionValue.text = rotationDirection.toString()
             tvTimeOfRotationValue.text = totalTimeOfDrumRotation.toString()
             tvRotationCyclesValue.text = rotationCycles.toString()
+            tvTemperatureValue.text = temperature.toString()
             tvMomentoValue.text = "${momento?.let { dateFormat.format(it).toString() + "h"} ?: "Nenhuma conexão"}"
         }
 
@@ -403,6 +400,23 @@ class HomeFragment : Fragment() {
                         tvMomentoValue.text = "${momento?.let { dateFormat.format(it).toString() + "h"} ?: "Nenhuma conexão"}"
                     }*/
                 }
+            }
+            buscaUltimosDados(sensorModelo)
+        }
+    }
+
+    private fun buscaUltimosDados(modelo : String){
+        lifecycleScope.launch {
+            val dados = viewModel.buscaUltimosDados()
+            Log.d(TAG, "buscaUltimosDados: ")
+            Log.d(TAG, "$dados")
+            binding.tvTemperatureValue.text = dados.temperatura.toString()
+            binding.tvMomentoValue.text = dados.momento.toString()
+            if (modelo == MECHATRONICS){
+                binding.tvRotationDirectionValue.text = dados.direcao.toString()
+            } else if (modelo == BLAZONLABS){
+                binding.tvRpmValue.text = dados.direcao.toString()
+                binding.tvBatteryValue.text = dados.bateria.toString()
             }
         }
     }

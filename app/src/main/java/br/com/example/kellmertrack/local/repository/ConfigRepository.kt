@@ -1,7 +1,5 @@
 package br.com.example.kellmertrack.local.repository
 
-import android.util.Log
-import br.com.example.kellmertrack.TAG
 import br.com.example.kellmertrack.local.dao.SetupDao
 import br.com.example.kellmertrack.local.model.DTO.DispositivoDTO
 import br.com.example.kellmertrack.remote.service.CommonService
@@ -15,7 +13,6 @@ class ConfigRepository @Inject constructor(
     suspend fun buscaAtualizacaoCadastro(numeroInterno : String?) : DispositivoDTO? {
         return try {
             val response = commonService.buscarDispositivo(numeroInterno)
-            Log.d(TAG, "buscaAtualizacaoCadastro response: $response")
             if (response.isSuccessful){
                 response.body()
             }else{
@@ -27,21 +24,7 @@ class ConfigRepository @Inject constructor(
         }
     }
 
-    suspend fun atualizaMacDispositivo(mac : String) {
-        setupDao.atualizaMacDispositivo(mac)
+    suspend fun atualizaMacDispositivo(mac : String, modelo : String) {
+        setupDao.atualizaMacDispositivo(mac, modelo)
     }
-
-    /*suspend fun buscaEntrega(veiculo : String): RemoteResponse<List<EntregaAPI>?> {
-        return try {
-            val response = commonService.buscaEntrega(veiculo)
-            println(response)
-            if (response.body() != null) {
-                val entregaResponse = response.body()
-                RemoteResponse.success(entregaResponse)
-            } else
-                RemoteResponse.error(response.code().toString(), null)
-        }catch (e: java.lang.Exception) {
-            RemoteResponse.error("Entrega não encontrada", null)
-        }
-    }*/
 }

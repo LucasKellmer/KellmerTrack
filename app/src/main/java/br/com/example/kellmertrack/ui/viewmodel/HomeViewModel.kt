@@ -65,8 +65,10 @@ class HomeViewModel @Inject constructor(
     suspend fun buscaUltimosDados(): UltimosDadosDTO {
         val dados = rotacaoRepository.buscaUltimoRotacao()
         return UltimosDadosDTO(
-            rpm = dados?.rpm,
-            momento = dados?.momento
+            direcao = dados?.direcao,
+            momento = dados?.momento,
+            bateria = dados?.bateria,
+            temperatura = dados?.temperatura,
         )
     }
 

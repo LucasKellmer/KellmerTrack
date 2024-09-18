@@ -6,30 +6,45 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
-    <LinearLayout
-        android:id="@+id/background_rounded"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/header_layout"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="@drawable/shape_background_rounded"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/shape_main_header_gradient"
+        android:orientation="vertical"
+        android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintHeight_percent="0.9"
-        android:elevation="1dp"
-        android:orientation="vertical">
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_caminhao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:text="VBT"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:paddingTop="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
             android:id="@+id/view_home_cotainer_status"
             android:layout_width="match_parent"
             android:layout_height="55dp"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/shape_container_status"
             android:baselineAligned="false"
             android:elevation="3dp"
             android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="@+id/header_layout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/header_layout">
+            app:layout_constraintTop_toBottomOf="@+id/tv_caminhao">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -132,99 +147,77 @@
             </LinearLayout>
         </LinearLayout>
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cardView"
+        <LinearLayout
+            android:id="@+id/background_rounded"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
-            app:cardCornerRadius="4dp"
-            app:cardElevation="8dp"
-            app:strokeColor="@color/colorPrimary_200"
-            app:strokeWidth="2dp"
-            app:layout_constraintEnd_toStartOf="parent"
+            android:layout_height="0dp"
+            android:background="@drawable/shape_background_rounded"
+            android:elevation="1dp"
+            android:orientation="vertical"
+            android:layout_marginTop="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view_home_cotainer_status">
 
-            <LinearLayout
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:padding="5dp"
-                android:background="@color/white">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="SENSOR"
-                    android:textColor="@color/darkGray"
-                    android:textAppearance="?android:textAppearanceMedium"
-                    android:textStyle="bold" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@android:color/darker_gray"
-                    android:layout_marginTop="2dp"/>
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="8dp"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="8dp"
+                app:layout_constraintEnd_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view_home_cotainer_status"
+                app:strokeColor="@color/colorPrimary_200"
+                app:strokeWidth="2dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="24dp"
-                    android:layout_marginTop="4dp"
-                    android:orientation="horizontal"
-                    android:textStyle="bold">
+                    android:layout_height="match_parent"
+                    android:background="@color/white"
+                    android:orientation="vertical"
+                    android:padding="5dp">
 
                     <TextView
-                        android:id="@+id/tv_conexao"
                         android:layout_width="wrap_content"
-                        android:layout_height="24dp"
-                        android:layout_marginStart="4dp"
-                        android:drawableLeft="@drawable/ic_action_conexao"
-                        android:drawablePadding="4dp"
-                        android:gravity="center"
-                        android:textColor="@color/darkGray"
-                        android:text="Conexão com o sensor:"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tv_conexao_value"
-                        android:layout_width="wrap_content"
-                        android:layout_height="24dp"
-                        android:layout_marginStart="4dp"
-                        android:gravity="center"
-                        android:text=""
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="SENSOR"
+                        android:textAppearance="?android:textAppearanceMedium"
                         android:textColor="@color/darkGray"
                         android:textStyle="bold" />
 
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/ll_blazonlabs_data"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="2dp"
+                        android:background="@android:color/darker_gray" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="24dp"
-                        android:orientation="horizontal">
+                        android:layout_marginTop="4dp"
+                        android:orientation="horizontal"
+                        android:textStyle="bold">
 
                         <TextView
-                            android:id="@+id/tv_rpm"
+                            android:id="@+id/tv_conexao"
                             android:layout_width="wrap_content"
                             android:layout_height="24dp"
                             android:layout_marginStart="4dp"
-                            android:drawableLeft="@drawable/ic_action_rpm"
+                            android:drawableLeft="@drawable/ic_action_conexao"
                             android:drawablePadding="4dp"
                             android:gravity="center"
-                            android:text="RPM:"
+                            android:text="Conexão com o sensor:"
                             android:textColor="@color/darkGray"
                             android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/tv_rpm_value"
+                            android:id="@+id/tv_conexao_value"
                             android:layout_width="wrap_content"
                             android:layout_height="24dp"
                             android:layout_marginStart="4dp"
@@ -232,6 +225,71 @@
                             android:text=""
                             android:textColor="@color/darkGray"
                             android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_blazonlabs_data"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="24dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/tv_rpm"
+                                android:layout_width="wrap_content"
+                                android:layout_height="24dp"
+                                android:layout_marginStart="4dp"
+                                android:drawableLeft="@drawable/ic_action_rpm"
+                                android:drawablePadding="4dp"
+                                android:gravity="center"
+                                android:text="RPM:"
+                                android:textColor="@color/darkGray"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tv_rpm_value"
+                                android:layout_width="wrap_content"
+                                android:layout_height="24dp"
+                                android:layout_marginStart="4dp"
+                                android:gravity="center"
+                                android:text=""
+                                android:textColor="@color/darkGray"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="24dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/tv_battery"
+                                android:layout_width="wrap_content"
+                                android:layout_height="24dp"
+                                android:layout_marginStart="4dp"
+                                android:drawableLeft="@drawable/ic_action_battery"
+                                android:drawablePadding="4dp"
+                                android:gravity="center"
+                                android:text="Bateria:"
+                                android:textColor="@color/darkGray"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tv_battery_value"
+                                android:layout_width="wrap_content"
+                                android:layout_height="24dp"
+                                android:layout_marginStart="4dp"
+                                android:gravity="center"
+                                android:text=""
+                                android:textColor="@color/darkGray"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
                     </LinearLayout>
 
                     <LinearLayout
@@ -240,19 +298,20 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:id="@+id/tv_battery"
+                            android:id="@+id/tv_momento"
                             android:layout_width="wrap_content"
                             android:layout_height="24dp"
                             android:layout_marginStart="4dp"
-                            android:drawableLeft="@drawable/ic_action_battery"
                             android:drawablePadding="4dp"
                             android:gravity="center"
-                            android:text="Bateria:"
+                            android:text="Momento:"
                             android:textColor="@color/darkGray"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            app:drawableLeftCompat="@drawable/ic_action_time"
+                            app:drawableTint="@color/colorPrimary_200" />
 
                         <TextView
-                            android:id="@+id/tv_battery_value"
+                            android:id="@+id/tv_momento_value"
                             android:layout_width="wrap_content"
                             android:layout_height="24dp"
                             android:layout_marginStart="4dp"
@@ -290,218 +349,153 @@
                             android:textStyle="bold" />
                     </LinearLayout>
 
+                    <LinearLayout
+                        android:id="@+id/ll_mechatronics_data"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="24dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/tv_rotation_direction"
+                                android:layout_width="wrap_content"
+                                android:layout_height="24dp"
+                                android:layout_marginStart="4dp"
+                                android:drawablePadding="4dp"
+                                android:gravity="center"
+                                android:text="Direção do sensor:"
+                                android:textColor="@color/darkGray"
+                                android:textStyle="bold"
+                                app:drawableLeftCompat="@drawable/ic_action_rpm"
+                                app:drawableTint="@color/colorPrimary_200" />
+
+                            <TextView
+                                android:id="@+id/tv_rotation_direction_value"
+                                android:layout_width="wrap_content"
+                                android:layout_height="24dp"
+                                android:layout_marginStart="4dp"
+                                android:gravity="center"
+                                android:text=""
+                                android:textColor="@color/darkGray"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="24dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/tv_time_of_rotation"
+                                android:layout_width="wrap_content"
+                                android:layout_height="24dp"
+                                android:layout_marginStart="4dp"
+                                android:drawablePadding="4dp"
+                                android:gravity="center"
+                                android:text="Tempo total de rotação:"
+                                android:textColor="@color/darkGray"
+                                android:textStyle="bold"
+                                app:drawableLeftCompat="@drawable/ic_action_time"
+                                app:drawableTint="@color/colorPrimary_200" />
+
+                            <TextView
+                                android:id="@+id/tv_time_of_rotation_value"
+                                android:layout_width="wrap_content"
+                                android:layout_height="24dp"
+                                android:layout_marginStart="4dp"
+                                android:gravity="center"
+                                android:text=""
+                                android:textColor="@color/darkGray"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="24dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/tv_rotation_cycles"
+                                android:layout_width="wrap_content"
+                                android:layout_height="24dp"
+                                android:layout_marginStart="4dp"
+                                android:drawablePadding="4dp"
+                                android:gravity="center"
+                                android:text="Ciclos de rotação:"
+                                android:textColor="@color/darkGray"
+                                android:textStyle="bold"
+                                app:drawableLeftCompat="@drawable/ic_action_time"
+                                app:drawableTint="@color/colorPrimary_200" />
+
+                            <TextView
+                                android:id="@+id/tv_rotation_cycles_value"
+                                android:layout_width="wrap_content"
+                                android:layout_height="24dp"
+                                android:layout_marginStart="4dp"
+                                android:gravity="center"
+                                android:text=""
+                                android:textColor="@color/darkGray"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                    </LinearLayout>
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="24dp"
-                    android:orientation="horizontal">
+            </com.google.android.material.card.MaterialCardView>
 
-                    <TextView
-                        android:id="@+id/tv_momento"
-                        android:layout_width="wrap_content"
-                        android:layout_height="24dp"
-                        android:layout_marginStart="4dp"
-                        android:drawablePadding="4dp"
-                        android:gravity="center"
-                        android:text="Momento:"
-                        android:textStyle="bold"
-                        android:textColor="@color/darkGray"
-                        app:drawableTint="@color/colorPrimary_200"
-                        app:drawableLeftCompat="@drawable/ic_action_time" />
-
-                    <TextView
-                        android:id="@+id/tv_momento_value"
-                        android:layout_width="wrap_content"
-                        android:layout_height="24dp"
-                        android:layout_marginStart="4dp"
-                        android:gravity="center"
-                        android:text=""
-                        android:textColor="@color/darkGray"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/ll_mechatronics_data"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="24dp"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/tv_rotation_direction"
-                            android:layout_width="wrap_content"
-                            android:layout_height="24dp"
-                            android:layout_marginStart="4dp"
-                            android:drawablePadding="4dp"
-                            android:gravity="center"
-                            android:text="Direção do sensor:"
-                            android:textStyle="bold"
-                            android:textColor="@color/darkGray"
-                            app:drawableTint="@color/colorPrimary_200"
-                            app:drawableLeftCompat="@drawable/ic_action_rpm" />
-
-                        <TextView
-                            android:id="@+id/tv_rotation_direction_value"
-                            android:layout_width="wrap_content"
-                            android:layout_height="24dp"
-                            android:layout_marginStart="4dp"
-                            android:gravity="center"
-                            android:text=""
-                            android:textColor="@color/darkGray"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="24dp"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/tv_time_of_rotation"
-                            android:layout_width="wrap_content"
-                            android:layout_height="24dp"
-                            android:layout_marginStart="4dp"
-                            android:drawablePadding="4dp"
-                            android:gravity="center"
-                            android:text="Tempo total de rotação:"
-                            android:textStyle="bold"
-                            android:textColor="@color/darkGray"
-                            app:drawableTint="@color/colorPrimary_200"
-                            app:drawableLeftCompat="@drawable/ic_action_time" />
-
-                        <TextView
-                            android:id="@+id/tv_time_of_rotation_value"
-                            android:layout_width="wrap_content"
-                            android:layout_height="24dp"
-                            android:layout_marginStart="4dp"
-                            android:gravity="center"
-                            android:text=""
-                            android:textColor="@color/darkGray"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="24dp"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/tv_rotation_cycles"
-                            android:layout_width="wrap_content"
-                            android:layout_height="24dp"
-                            android:layout_marginStart="4dp"
-                            android:drawablePadding="4dp"
-                            android:gravity="center"
-                            android:text="Ciclos de rotação:"
-                            android:textStyle="bold"
-                            android:textColor="@color/darkGray"
-                            app:drawableTint="@color/colorPrimary_200"
-                            app:drawableLeftCompat="@drawable/ic_action_time" />
-
-                        <TextView
-                            android:id="@+id/tv_rotation_cycles_value"
-                            android:layout_width="wrap_content"
-                            android:layout_height="24dp"
-                            android:layout_marginStart="4dp"
-                            android:gravity="center"
-                            android:text=""
-                            android:textColor="@color/darkGray"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-                </LinearLayout>
-
-
-            </LinearLayout>
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="8dp"
-            app:cardCornerRadius="10dp"
-            app:cardElevation="4dp"
-            app:strokeColor="@color/colorPrimary_200"
-            app:strokeWidth="2dp"
-            android:background="@color/white"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardView">
-
-            <LinearLayout
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:padding="5dp"
-                android:background="@color/white">
+                android:layout_margin="8dp"
+                android:background="@color/white"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="4dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cardView"
+                app:strokeColor="@color/colorPrimary_200"
+                app:strokeWidth="2dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="EVENTOS"
-                    android:textAppearance="?android:textAppearanceMedium"
-                    android:textStyle="bold"
-                    android:textColor="@color/darkGray"/>
-
-                <View
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@android:color/darker_gray"
-                    android:layout_marginTop="2dp"/>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerEventos"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@color/white"
                     android:orientation="vertical"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:listitem="@layout/item_evento"
-                    android:background="@color/background"/>
+                    android:padding="5dp">
 
-            </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="EVENTOS"
+                        android:textAppearance="?android:textAppearanceMedium"
+                        android:textColor="@color/darkGray"
+                        android:textStyle="bold" />
 
-        </com.google.android.material.card.MaterialCardView>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="2dp"
+                        android:background="@android:color/darker_gray" />
 
-    </LinearLayout>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerEventos"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/background"
+                        android:orientation="vertical"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:listitem="@layout/item_evento" />
 
-    <LinearLayout
-        android:id="@+id/header_layout"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@drawable/shape_main_header_gradient"
-        android:orientation="horizontal"
-        android:gravity="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintHeight_percent="0.15">
+                </LinearLayout>
 
-        <TextView
-            android:id="@+id/tv_caminhao"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            android:text="VBT"
-            android:textAlignment="center"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/view_home_cotainer_status"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-    </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
-
-
-
-
-
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

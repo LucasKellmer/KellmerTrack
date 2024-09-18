@@ -31,23 +31,17 @@ android {
     }
 
     buildTypes {
-        /*release {
-            minifyEnabled true
-            shrinkResources true
-            manifestPlaceholders = [crashlyticsCollectionEnabled:"true"]
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField("String", 'urlApi', '"https://sighapi.grupohobi.com.br"')
-            buildConfigField("String", 'urlApiContingencia', '"http://34.95.222.160:5000"')
-            buildConfigField("String", 'urlWs', '"wss://sighapi.grupohobi.com.br/hobitracksocket"')
-            buildConfigField("String", 'urlWsContingencia', '"ws://34.95.222.160:5000/hobitracksocket"')
-        }*/
+        release {
+            ext.enableCrashlytics=false
+            manifestPlaceholders = [crashlyticsCollectionEnabled:"false"]
+            buildConfigField("String", 'urlApi', '"https://kellmertrackapi.onrender.com"')
+            buildConfigField("String", 'urlWs', '"wss://kellmertrackapi.onrender.com/websocket"')
+        }
         staging {
             ext.enableCrashlytics=false
             manifestPlaceholders = [crashlyticsCollectionEnabled:"false"]
-            buildConfigField("String", 'urlApi', '"http://192.168.0.5:8080"')
-            buildConfigField("String", 'urlApiContingencia', '"http://192.168.0.5:8080"')
-            buildConfigField("String", 'urlWs', '"ws://192.168.0.5:8080/hobitracksocket"')
-            buildConfigField("String", 'urlWsContingencia', '"ws://192.168.10.5:8080/hobitracksocket"')
+            buildConfigField("String", 'urlApi', '"https://kellmertrackapi.onrender.com"')
+            buildConfigField("String", 'urlWs', '"wss://kellmertrackapi.onrender.com/websocket"')
         }
         debug {
             ext.enableCrashlytics=false
