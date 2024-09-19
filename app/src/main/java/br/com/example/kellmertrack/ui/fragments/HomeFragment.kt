@@ -38,7 +38,6 @@ import br.com.example.kellmertrack.core.Sistema
 import br.com.example.kellmertrack.databinding.HomeFragmentBinding
 import br.com.example.kellmertrack.extensions.verificaConexao
 import br.com.example.kellmertrack.local.model.entities.RotacaoEntity
-import br.com.example.kellmertrack.local.model.entities.SetupEntity
 import br.com.example.kellmertrack.services.bluetooth.BluetoothService
 import br.com.example.kellmertrack.services.location.LocationService
 import br.com.example.kellmertrack.services.webSocket.WebSocketService
@@ -186,6 +185,17 @@ class HomeFragment : Fragment() {
             if(status == false){
                 bluetoothService?.iniciaBluetooth()
                 viewModel.iniciaBluetooth.postValue(true)
+            }
+            verificaMac()
+        }
+    }
+
+    private fun verificaMac() {
+        val sensorAddress = BluetoothService.getMac()
+        if (sensorAddress.isNotEmpty()) {
+            if (sensorAddress != (Sistema.getSetup()?.mac ?: viewModel.setup.value?.mac)) {
+                bluetoothService?.stopBluetoothScanning()
+                bluetoothService?.iniciaBluetooth()
             }
         }
     }
@@ -354,7 +364,7 @@ class HomeFragment : Fragment() {
             Log.d(TAG, "buscaUltimosDados: ")
             Log.d(TAG, "$dados")
             binding.tvTemperatureValue.text = dados.temperatura.toString()
-            binding.tvMomentoValue.text = dados.momento.toString()
+            binding.tvMomentoValue.text = "${dados.momento?.let { dateFormat.format(it).toString() + "h"} ?: "Nenhuma conexão"}"
             if (modelo == MECHATRONICS){
                 binding.tvRotationDirectionValue.text = dados.direcao.toString()
             } else if (modelo == BLAZONLABS){
