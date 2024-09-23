@@ -88,6 +88,7 @@ class BluetoothService @Inject constructor(): Service(), BluetoothServiceCallbac
         }
         startForegroundService()
         iniciaBluetooth()
+        isScanning()
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -138,23 +139,27 @@ class BluetoothService @Inject constructor(): Service(), BluetoothServiceCallbac
         verificaConexaoDispositivo()
         if (bluetoothAdapter.isEnabled){
             scope.launch{
+                bluetoothManager.adapter
                 if(setupRepository.buscaSetup() != null){
                     startBluetoothScanning()
                 }
             }
         }
+    }
+
+    private fun isScanning(){
         timer.schedule(object : TimerTask() {
             override fun run() {
                 val currentTime = Date().time
                 Log.d(TAG, "================ rodando task: $bluetoothStatus, ${currentTime - (lastSensorDataScanned?.time ?: currentTime)}")
-                if (bluetoothStatus == DESCONECTADO || (currentTime - (lastSensorDataScanned?.time ?: currentTime)) >= 60000){
+                if (((currentTime - (lastSensorDataScanned?.time ?: currentTime)) >= 60000) || lastSensorDataScanned == null){
+                    Log.d(TAG, "============= isScanning: $isScanning")
                     if(!isScanning)
-                        startBluetoothScanning()
+                        iniciaBluetooth()
                     bluetoothStatus = if(isScanning) PROCURANDO else DESCONECTADO
                     sendSensorStatusBroadcast()
                     verificaConexaoDispositivo()
                 }
-
             }
         }, 30000, 30000)
     }
@@ -170,6 +175,7 @@ class BluetoothService @Inject constructor(): Service(), BluetoothServiceCallbac
 
         scope.launch {
             val mac = Sistema.getSetup()?.mac ?: setupRepository.buscaSetup()?.mac
+            Log.d(TAG, "============= mac: $mac")
             sensorAddress = mac.toString()
             val tipoSensor = Sistema.getSetup()?.modelo ?: setupRepository.buscaSetup()?.modelo
 
@@ -185,8 +191,8 @@ class BluetoothService @Inject constructor(): Service(), BluetoothServiceCallbac
     }
 
     private fun startScan(filters: MutableList<ScanFilter>, scanSettings: ScanSettings, tipoSensor : String?) {
+        Log.d(TAG, "=================== startScan chamado: $tipoSensor")
         val bluetoothLeScanner = bluetoothLeScanner
-        isScanning = true
         bluetoothStatus = PROCURANDO
         sendSensorStatusBroadcast()
         verificaConexaoDispositivo()
@@ -195,13 +201,13 @@ class BluetoothService @Inject constructor(): Service(), BluetoothServiceCallbac
             scanCallback = object : ScanCallback() {
                 override fun onScanResult(callbackType: Int, result: ScanResult) {
                     Log.d(TAG, " $result")
+                    isScanning = true
                     lastSensorDataScanned = Date()
                     bluetoothStatus = CONECTADO
                     sendSensorStatusBroadcast()
                     verificaConexaoDispositivo()
 
                     if (tipoSensor == MECHATRONICS) {
-
                         val timeDifference = lastSensorDataScanned!!.time - (lastSensorDataSaved?.time ?: 0)
                         if (timeDifference >= 30000) {
                             lastSensorDataSaved = Date()
@@ -227,9 +233,11 @@ class BluetoothService @Inject constructor(): Service(), BluetoothServiceCallbac
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             if (checkSelfPermission(Manifest.permission.BLUETOOTH_SCAN) == PackageManager.PERMISSION_GRANTED) {
+                Log.d(TAG, "=================== iniciando scanning")
                 bluetoothLeScanner?.startScan(filters, scanSettings, scanCallback)
             }
         } else {
+            Log.d(TAG, "=================== iniciando scanning")
             bluetoothLeScanner?.startScan(filters, scanSettings, scanCallback)
         }
     }
@@ -343,6 +351,7 @@ class BluetoothService @Inject constructor(): Service(), BluetoothServiceCallbac
     }
 
     private fun sendSensorDataBroadcast(tipoSensor : String) {
+        Log.d(TAG, "================ sendSensorDataBroadcast: $tipoSensor ")
         val intent = Intent(ACTION_ROTACAO).apply {
             if (tipoSensor == BLAZONLABS)
                 this.putExtra(BLAZONLABS, "BLAZONLABS")

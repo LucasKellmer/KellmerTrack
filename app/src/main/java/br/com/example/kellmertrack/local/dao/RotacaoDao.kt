@@ -16,7 +16,7 @@ abstract class RotacaoDao: BaseDao<RotacaoEntity> {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract override suspend fun insert(Obj: RotacaoEntity)
 
-    @Query("DELETE FROM rotacao WHERE (date(momento / 1000, 'unixepoch', 'localtime') < date() AND sincronizado = 1)" +
+    @Query("DELETE FROM rotacao WHERE (date(momento / 1000, 'unixepoch', 'localtime') < date('now', '-2 day') AND sincronizado = 1)" +
             " OR (date(momento / 1000, 'unixepoch', 'localtime') < date('now', '-10 day'))")
     abstract suspend fun deleteAll()
 

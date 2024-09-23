@@ -48,6 +48,7 @@ import br.com.example.kellmertrack.ui.viewmodel.ComponentesFragments
 import br.com.example.kellmertrack.ui.viewmodel.HomeViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -101,7 +102,6 @@ class HomeFragment : Fragment() {
         val activity = requireActivity() as MainActivity
         activity.checkBasePermissions()
         verificaAtualizacaoApp()
-        //inicializa()
         startServices()
         setBroadcastReceiver()
         return inflater.inflate(R.layout.home_fragment, container, false)
@@ -290,8 +290,9 @@ class HomeFragment : Fragment() {
     }
 
     private fun setBroadcastReceiver() {
-        viewModel.broadcastReceiver.observe(viewLifecycleOwner){ status ->
-            if(!status){
+        //viewModel.broadcastReceiver.observe(viewLifecycleOwner){ status ->
+            //if(!status){
+            if (!::broadcastReceiver.isInitialized){
                 println("------------------- setando broadcastReceiver")
                 broadcastReceiver = DeviceServiceBroadcasterReceiver()
                 val intentFilter = IntentFilter().apply {
@@ -301,24 +302,21 @@ class HomeFragment : Fragment() {
                 LocalBroadcastManager.getInstance(requireContext()).registerReceiver(broadcastReceiver, intentFilter)
                 viewModel.broadcastReceiver.postValue(true)
             }
-        }
+        //}
     }
 
     private inner class DeviceServiceBroadcasterReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             if (intent?.action == ACTION_ROTACAO) {
                 println("======================= broadcast recebido")
+                println("======================= intent.extras: ${intent.extras}")
+                println("======================= intentExtra?.containsKey(MECHATRONICS: ${intent.extras?.containsKey(MECHATRONICS)}")
                 //if(isAppInForeground){
-                    GlobalScope.launch {
-                        withContext(Dispatchers.Main) {
-                            val intentExtra = intent.extras
-                            if (intentExtra?.containsKey(BLAZONLABS) == true)
-                                setSensorData(BluetoothService.getSensorData(), BLAZONLABS)
-                                //atualizaDadosSensor()
-                            else if (intentExtra?.containsKey(MECHATRONICS) == true)
-                                setSensorData(BluetoothService.getSensorData(), MECHATRONICS)
-                        }
-                    }
+                    val intentExtra = intent.extras
+                    if (intentExtra?.containsKey(BLAZONLABS) == true)
+                        setSensorData(BluetoothService.getSensorData(), BLAZONLABS)
+                    else if (intentExtra?.containsKey(MECHATRONICS) == true)
+                        setSensorData(BluetoothService.getSensorData(), MECHATRONICS)
                 //}
             }else{
                 atualizaSensorStatus()
@@ -327,16 +325,19 @@ class HomeFragment : Fragment() {
     }
 
     fun setSensorData(rotacao : RotacaoEntity?, sensorModel : String) {
-        with(binding){
-            val momento = BluetoothService.getLastSensorDataTime()
-            if(sensorModel == MECHATRONICS)
-                tvRotationDirectionValue.text = rotacao?.direcao.toString()
-            else if (sensorModel == BLAZONLABS){
-                tvRpmValue.text = rotacao?.rpm.toString()
-                tvBatteryValue.text = rotacao?.bateria.toString()
-            }
-            tvTemperatureValue.text = rotacao?.temperatura.toString()
-            tvMomentoValue.text = "${momento?.let { dateFormat.format(it).toString() + "h"} ?: "Nenhuma conexão"}"
+        Log.d(TAG, "============== setSensorData chamado: $sensorModel")
+        Log.d(TAG, "============== rotacao: ")
+        Log.d(TAG, rotacao.toString())
+        Log.d(TAG, rotacao?.direcao.toString())
+        Log.d(TAG, rotacao?.momento.toString())
+        val momento = BluetoothService.getLastSensorDataTime()
+        binding.tvTemperatureValue.text = rotacao?.temperatura.toString()
+        binding.tvMomentoValue.text = "${momento?.let { dateFormat.format(it).toString() + "h"} ?: "Nenhuma conexão"}"
+        if(sensorModel == MECHATRONICS)
+            binding.tvRotationDirectionValue.text = rotacao?.direcao.toString()
+        else if (sensorModel == BLAZONLABS){
+            binding.tvRpmValue.text = rotacao?.rpm.toString()
+            binding.tvBatteryValue.text = rotacao?.bateria.toString()
         }
     }
 
@@ -387,7 +388,7 @@ class HomeFragment : Fragment() {
                     viewModel.salvaLoginDispositivo(dispositivo)
                     viewModel.logado.postValue(true)
                     atualizaDadosSensor()
-                    onResume()
+                    //onResume()
                 }
             }
         }
