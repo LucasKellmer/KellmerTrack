@@ -12,6 +12,7 @@ import br.com.example.kellmertrack.TAG
 import br.com.example.kellmertrack.TAG_TASK_DB
 import br.com.example.kellmertrack.TAG_TASK_FIREBASE
 import br.com.example.kellmertrack.TAG_TASK_UPDATE_APP
+import br.com.example.kellmertrack.extensions.healthy
 import br.com.example.kellmertrack.local.location.GeofenceTransition
 import br.com.example.kellmertrack.local.location.KellmerTrackGeofence
 import br.com.example.kellmertrack.services.tasks.TaskDBKellmertrack
@@ -104,25 +105,27 @@ class LocationService @Inject constructor() : Service(), LocationClientCallBack 
         CoroutineScope(Dispatchers.Main).launch {
             try {
                 location?.let {
-                    if (lastLocation != null) {
-                        Log.d("LocationService", "Distância = ${location.distanceTo(lastLocation!!)}")
-                        if (location.distanceTo(lastLocation!!) > 0) {
-                            val setup = setupRepository.buscaSetup()
-                            if(setup != null){
-                                val numeroInterno = setup.numeroInterno
-                                val veiculoId = setup.veiculosId
-                                val trajeto = criaTrajeto(location, numeroInterno, veiculoId)
-                                val localizacaoDTO = TrajetoMapper().fromTrajetoEntityToDTO(trajeto)
-                                monitorarGeofence(location)
-                                trajetoRepository.salvaDadosTrajeto(trajeto)
+                    if(location.healthy()){
+                        if (lastLocation != null) {
+                            Log.d("LocationService", "Distância = ${location.distanceTo(lastLocation!!)}")
+                            if (location.distanceTo(lastLocation!!) > 0) {
+                                val setup = setupRepository.buscaSetup()
+                                if(setup != null){
+                                    val numeroInterno = setup.numeroInterno
+                                    val veiculoId = setup.veiculosId
+                                    val trajeto = criaTrajeto(location, numeroInterno, veiculoId)
+                                    val localizacaoDTO = TrajetoMapper().fromTrajetoEntityToDTO(trajeto)
+                                    monitorarGeofence(location)
+                                    trajetoRepository.salvaDadosTrajeto(trajeto)
 
-                                firebaseService.enviaLocalizacaoFirebase(localizacaoDTO)
+                                    firebaseService.enviaLocalizacaoFirebase(localizacaoDTO)
+                                }
                             }
                         }
+                        if (!geofenceIniciado)
+                            iniciaGeofence()
+                        lastLocation = location
                     }
-                    if (!geofenceIniciado)
-                        iniciaGeofence()
-                    lastLocation = location
                 }
             } catch (e: Exception) {
                 Log.d("LocationService", "Erro ao atualizar a localizacao: ${e.message.toString()}")

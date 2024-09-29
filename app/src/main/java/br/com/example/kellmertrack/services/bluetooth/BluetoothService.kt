@@ -233,11 +233,9 @@ class BluetoothService @Inject constructor(): Service(), BluetoothServiceCallbac
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             if (checkSelfPermission(Manifest.permission.BLUETOOTH_SCAN) == PackageManager.PERMISSION_GRANTED) {
-                Log.d(TAG, "=================== iniciando scanning")
                 bluetoothLeScanner?.startScan(filters, scanSettings, scanCallback)
             }
         } else {
-            Log.d(TAG, "=================== iniciando scanning")
             bluetoothLeScanner?.startScan(filters, scanSettings, scanCallback)
         }
     }
@@ -295,13 +293,7 @@ class BluetoothService @Inject constructor(): Service(), BluetoothServiceCallbac
             sensorData = rotacaoEntity
             sendSensorDataBroadcast(MECHATRONICS)
 
-            if(rotationDirection != 0){
-                if (rotacaoEntity != null) {
-                    CoroutineScope(Dispatchers.IO).launch {
-                        rotacaoRepository.salvaDadosRotacao(rotacaoEntity)
-                    }
-                }
-            }
+            salvaRotacao(rotacaoEntity)
         }
     }
 
@@ -317,11 +309,17 @@ class BluetoothService @Inject constructor(): Service(), BluetoothServiceCallbac
         val rotacaoEntity = criaRotacaoEntity(battery, temperature, rpm)
         sensorData = rotacaoEntity
         sendSensorDataBroadcast(BLAZONLABS)
+        salvaRotacao(rotacaoEntity)
+    }
 
-        if(rpm != 0){
-            if (rotacaoEntity != null) {
-                CoroutineScope(Dispatchers.IO).launch {
-                    rotacaoRepository.salvaDadosRotacao(rotacaoEntity)
+    private fun salvaRotacao(rotacao : RotacaoEntity?){
+        CoroutineScope(Dispatchers.IO).launch {
+            val ultimaRotacao = rotacaoRepository.buscaUltimoRotacao()
+            if(ultimaRotacao?.direcao != 0 || rotacao?.direcao != 0){
+                if (rotacao != null) {
+                    CoroutineScope(Dispatchers.IO).launch {
+                        rotacaoRepository.salvaDadosRotacao(rotacao)
+                    }
                 }
             }
         }

@@ -61,7 +61,7 @@ class WebSocketService @Inject constructor() : Service() {
         val notificationService = NotificationService(this, "Conexão com o servicor realizada","WebSocket", "WebSocket")
         startForeground(33, notificationService.createNotification())
         //connectWebSocket()
-        Timer().scheduleAtFixedRate(object : TimerTask() {
+        Timer().schedule(object : TimerTask() {
             override fun run() {
                 if (_socketConnected.value == false)
                     connectWebSocket()
@@ -92,7 +92,7 @@ class WebSocketService @Inject constructor() : Service() {
                 .build()
 
             client = OkHttpClient.Builder()
-                .readTimeout(3, TimeUnit.SECONDS)
+                .readTimeout(1, TimeUnit.MINUTES)
                 .build()
 
             webSocketListener = object : WebSocketListener() {

@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         configRouteController()
-        routerController.navigate(R.id.HomeFragment)
+        //routerController.navigate(R.id.HomeFragment)
         bottomBarObserve()
     }
 

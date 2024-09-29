@@ -9,12 +9,13 @@ import javax.inject.Inject
 
 class EventoRepository @Inject constructor(
     private val eventoDao : EventoDao,
+    private val eventoMapper : EventoMapper,
     private val firebaseService : FirebaseService
 ) {
 
     suspend fun salvarEvento(evento : EventoEntity){
         eventoDao.insert(evento)
-        val eventoDTO = EventoMapper().fromEventoEntityToEventoDTO(evento)
+        val eventoDTO = eventoMapper.fromEventoEntityToEventoDTO(evento)
         if(!evento.sincronizado){
             if (firebaseService.enviaEventoFirebase(eventoDTO))
                 evento.id?.let { eventoDao.updateEventoSincronizado(it) }
@@ -25,7 +26,7 @@ class EventoRepository @Inject constructor(
 
     suspend fun enviaEventosFirebase(){
         eventoDao.getSincronizar()?.forEach { evento ->
-            val eventoDTO = EventoMapper().fromEventoEntityToEventoDTO(evento)
+            val eventoDTO = eventoMapper.fromEventoEntityToEventoDTO(evento)
             if(firebaseService.enviaEventoFirebase(eventoDTO))
                 eventoDao.updateEventoSincronizado(evento.id)
         }
